@@ -35,6 +35,7 @@ jobs:
           # Clean and build using all available processor cores
           cd ido-static-recomp
           make clean || true
+          make setup -j$(nproc)
           make -j$(nproc)
 
       - name: Upload Build Artifacts
