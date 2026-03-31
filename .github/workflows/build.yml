@@ -20,29 +20,29 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           msystem: MSYS
-          # We are adding msys2-runtime-devel and the cross-compiler 
-          # to get the 32-bit static libs that 'ld' is missing.
+          # We need the 32-bit runtime and the cross-compiler 
+          # that understands the MSYS/Cygwin environment.
           install: >-
             base-devel
-            gcc
             make
-            msys2-runtime-devel
           update: true
 
       - name: Build project
         run: |
+          # Manually install the 32-bit MSYS compiler and runtime
+          # Note: 'gcc-libs-i686' and 'msys2-runtime-devel' provide the 32-bit libs
+          pacman -S --noconfirm msys2-runtime-devel gcc-libs-i686
+          
           cd ido-static-recomp
           
-          # 1. Force the compiler to 32-bit
+          # Force the use of the 32-bit flags and point to the 32-bit lib folder
           export CFLAGS="-m32 -march=i686"
           export CXXFLAGS="-m32 -march=i686"
           export LDFLAGS="-m32 -static"
           
-          # 2. THE SECRET SAUCE: 
-          # We tell the linker exactly where the 32-bit MSYS libs are.
-          # On GitHub runners, these are often in /usr/lib/i686-pc-msys
+          # This tells the linker to look in the i686-specific folder for libm, libgcc, etc.
           export LIBRARY_PATH="/usr/lib/i686-pc-msys:/usr/lib"
-          
+
           make clean || true
           make setup -j$(nproc)
           make -j$(nproc)
