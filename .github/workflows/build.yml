@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    defaults:
+      defaults:
       run:
         # This ensures all 'run' steps use the MSYS2 bash shell by default
         shell: msys2 {0}
