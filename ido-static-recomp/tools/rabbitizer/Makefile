@@ -13,9 +13,9 @@ IINC_XX         := -I include -I cplusplus/include
 CSTD            := -std=c11
 CXXSTD          := -std=c++17
 CFLAGS          := -fPIC -m32
-CXXFLAGS        := -fPIC
+CXXFLAGS        := -fPIC -m32
 LDFLAGS         := -Lbuild -lrabbitizer -m32
-LDXXFLAGS       := -Lbuild -lrabbitizerpp
+LDXXFLAGS       := -Lbuild -lrabbitizerpp -m32
 WARNINGS        := -Wall -Wextra -Wpedantic
 # WARNINGS        := -Wall -Wextra -Wpedantic -Wpadded
 WARNINGS        += -Werror=vla -Werror=switch -Werror=implicit-fallthrough -Werror=unused-function -Werror=unused-parameter -Werror=shadow

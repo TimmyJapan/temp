@@ -13,11 +13,7 @@ jobs:
       run:
         # This ensures all 'run' steps use the MSYS2 bash shell by default
         shell: msys2 {0}
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
+        
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
@@ -26,7 +22,10 @@ jobs:
             base-devel
             gcc
             make
-            msys2-devel-i686
+            msys2-runtime-devel
+            libcrypt-devel
+            libiconv-devel
+            gettext-devel
           update: true
           
       - name: Build project
