@@ -21,13 +21,14 @@ jobs:
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
-          msystem: MSYS # Keep MSYS for the Unix headers/paths
+          msystem: MSYS
           install: >-
             base-devel
             gcc
             make
+            msys2-devel-i686
           update: true
-
+          
       - name: Build project
         run: |
           cd ido-static-recomp
