@@ -19,24 +19,34 @@ jobs:
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
-          msystem: MINGW32  # Switch to MINGW32 to get 32-bit libs
+          msystem: MSYS
+          # We are adding msys2-runtime-devel and the cross-compiler 
+          # to get the 32-bit static libs that 'ld' is missing.
           install: >-
             base-devel
-            mingw-w64-i686-gcc
+            gcc
             make
+            msys2-runtime-devel
           update: true
 
       - name: Build project
         run: |
           cd ido-static-recomp
-          # Tell the Makefile to use the i686 compiler instead of the 64-bit one
-          export CC=i686-w64-mingw32-gcc
-          export CXX=i686-w64-mingw32-g++
+          
+          # 1. Force the compiler to 32-bit
+          export CFLAGS="-m32 -march=i686"
+          export CXXFLAGS="-m32 -march=i686"
+          export LDFLAGS="-m32 -static"
+          
+          # 2. THE SECRET SAUCE: 
+          # We tell the linker exactly where the 32-bit MSYS libs are.
+          # On GitHub runners, these are often in /usr/lib/i686-pc-msys
+          export LIBRARY_PATH="/usr/lib/i686-pc-msys:/usr/lib"
           
           make clean || true
           make setup -j$(nproc)
           make -j$(nproc)
-
+          
       - name: Check Architecture
         run: |
           file ido-static-recomp/build/out/cc
