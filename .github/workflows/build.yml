@@ -1,0 +1,47 @@
+name: MSYS2 x86 Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        # This ensures all 'run' steps use the MSYS2 bash shell by default
+        shell: msys2 {0}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          # 'msys' provides the standard POSIX-like environment
+          msystem: MSYS
+          # Install necessary build tools
+          install: >-
+            base-devel
+            gcc
+            make
+          update: true
+
+      - name: Build project
+        run: |
+          # Clean and build using all available processor cores
+          make clean || true
+          make -j$(nproc)
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-build-output-x86
+          # Uploading '.' captures everything in the current directory
+          # You can change this to a specific folder (e.g., './dist') if preferred
+          path: .
+          # Optional: exclude the .git folder to keep the artifact size down
+          retention-days: 5
