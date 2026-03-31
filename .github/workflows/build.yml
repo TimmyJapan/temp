@@ -15,24 +15,24 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
+      
       - name: Setup MSYS2
         uses: msys2/setup-msys2@v2
         with:
-          msystem: MSYS
+          msystem: MINGW32  # Switch to MINGW32 to get 32-bit libs
           install: >-
             base-devel
-            gcc
+            mingw-w64-i686-gcc
             make
-            msys2-runtime-devel
-            libcrypt-devel
-            libiconv-devel
-            gettext-devel
           update: true
 
       - name: Build project
         run: |
           cd ido-static-recomp
+          # Tell the Makefile to use the i686 compiler instead of the 64-bit one
+          export CC=i686-w64-mingw32-gcc
+          export CXX=i686-w64-mingw32-g++
+          
           make clean || true
           make setup -j$(nproc)
           make -j$(nproc)
