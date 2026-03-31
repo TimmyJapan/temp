@@ -51,9 +51,9 @@ CXX   := g++
 STRIP := strip
 
 CSTD         ?= -std=c11
-CFLAGS       ?= -MMD -fno-strict-aliasing -I. -m32
+CFLAGS       ?= -MMD -fno-strict-aliasing -I. -m32 -I./include_shim
 CXXSTD       ?= -std=c++17
-CXXFLAGS     ?= -MMD -m32
+CXXFLAGS     ?= -MMD -m32 -I./include_shim
 WARNINGS     ?= -Wall -Wextra -m32
 LDFLAGS      ?= -lm -m32
 RECOMP_FLAGS ?=
