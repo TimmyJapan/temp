@@ -33,6 +33,7 @@ jobs:
       - name: Build project
         run: |
           # Clean and build using all available processor cores
+          cd ido-static-recomp
           make clean || true
           make -j$(nproc)
 
