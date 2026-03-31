@@ -12,9 +12,9 @@ IINC            := -I include
 IINC_XX         := -I include -I cplusplus/include
 CSTD            := -std=c11
 CXXSTD          := -std=c++17
-CFLAGS          := -fPIC
+CFLAGS          := -fPIC -m32
 CXXFLAGS        := -fPIC
-LDFLAGS         := -Lbuild -lrabbitizer
+LDFLAGS         := -Lbuild -lrabbitizer -m32
 LDXXFLAGS       := -Lbuild -lrabbitizerpp
 WARNINGS        := -Wall -Wextra -Wpedantic
 # WARNINGS        := -Wall -Wextra -Wpedantic -Wpadded
