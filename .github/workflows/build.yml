@@ -34,6 +34,7 @@ jobs:
           # We force -m32 to tell the 64-bit GCC to build a 32-bit binary
           # We also define _FILE_OFFSET_BITS=64 to keep the Unix headers happy
           make clean || true
+          make setup -j$(nproc)
           make -j$(nproc)
 
       - name: Check Architecture
